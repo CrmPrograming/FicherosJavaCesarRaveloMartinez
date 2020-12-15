@@ -33,9 +33,9 @@
                   <TextField fx:id="tfRutaActual" GridPane.columnIndex="1" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <children>
-                        <Button fx:id="btCrear" mnemonicParsing="false" text="Crear" />
-                        <Button fx:id="btEliminar" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="btMover" mnemonicParsing="false" text="Mover" />
+                        <Button fx:id="btCrear" mnemonicParsing="false" onAction="#onCrearAction" text="Crear" />
+                        <Button fx:id="btEliminar" mnemonicParsing="false" onAction="#onEliminarAction" text="Eliminar" />
+                        <Button fx:id="btMover" mnemonicParsing="false" onAction="#onMoverAction" text="Mover" />
                         <CheckBox fx:id="cbCarpeta" mnemonicParsing="false" text="Es carpeta" />
                         <CheckBox fx:id="cbFichero" mnemonicParsing="false" text="Es fichero" />
                      </children>

@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import aed.proyectos.ficheros_java.model.Fichero;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,57 +22,86 @@ import javafx.scene.layout.VBox;
 public class FicheroController implements Initializable {
 
 	// model
-	
+	private ObjectProperty<Fichero> fichero = new SimpleObjectProperty<>();
 	// view
-	
+
 	@FXML
-    private VBox view;
+	private VBox view;
 
-    @FXML
-    private TextField tfRutaActual;
+	@FXML
+	private TextField tfRutaActual;
 
-    @FXML
-    private Button btCrear;
+	@FXML
+	private Button btCrear;
 
-    @FXML
-    private Button btEliminar;
+	@FXML
+	private Button btEliminar;
 
-    @FXML
-    private Button btMover;
+	@FXML
+	private Button btMover;
 
-    @FXML
-    private CheckBox cbCarpeta;
+	@FXML
+	private CheckBox cbCarpeta;
 
-    @FXML
-    private CheckBox cbFichero;
+	@FXML
+	private CheckBox cbFichero;
 
-    @FXML
-    private TextField tfNombre;
+	@FXML
+	private TextField tfNombre;
 
-    @FXML
-    private Button btVerFicherosCarpetas;
+	@FXML
+	private Button btVerFicherosCarpetas;
 
-    @FXML
-    private ListView<?> lvFicherosCarpetas;
+	@FXML
+	private ListView<String> lvFicherosCarpetas;
 
-    @FXML
-    private Button btVerContenidoFichero;
+	@FXML
+	private Button btVerContenidoFichero;
 
-    @FXML
-    private Button btModificarFichero;
+	@FXML
+	private Button btModificarFichero;
 
-    @FXML
-    private TextArea taContenidoFichero;
-    
-    public FicheroController() throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FicherosView.fxml"));
+	@FXML
+	private TextArea taContenidoFichero;
+
+	public FicheroController() throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FicherosView.fxml"));
 		loader.setController(this);
 		loader.load();
-    }
-    
-    @Override
+	}
+
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		tfRutaActual.textProperty().bindBidirectional(fichero.get().rutaProperty());
+		tfNombre.textProperty().bindBidirectional(fichero.get().nombreProperty());
+		cbCarpeta.selectedProperty().bindBidirectional(fichero.get().carpetaProperty());
+		cbFichero.selectedProperty().bindBidirectional(fichero.get().ficheroProperty());
+
+		// Deshabilitar si:
+		// - Al menos un campo de texto está vacío
+		// - Ambos checkbox están sin marcar		
+		btCrear.disableProperty().bind(
+				Bindings.or(
+						Bindings.and(cbCarpeta.selectedProperty().not(), cbFichero.selectedProperty().not()),
+						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())
+				)
+		);
+
+	}
+
+	@FXML
+	void onCrearAction(ActionEvent event) {
+
+	}
+
+	@FXML
+	void onEliminarAction(ActionEvent event) {
+
+	}
+
+	@FXML
+	void onMoverAction(ActionEvent event) {
+
 	}
 
 	public VBox getView() {
@@ -76,6 +110,6 @@ public class FicheroController implements Initializable {
 
 	public void setView(VBox view) {
 		this.view = view;
-	}    
-	
+	}
+
 }
