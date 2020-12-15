@@ -78,9 +78,9 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="btVerContenidoFichero" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ver Contenido Fichero" />
-                  <Button fx:id="btModificarFichero" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Modificar Fichero" GridPane.rowIndex="1" />
-                  <TextArea fx:id="taContenidoFichero" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="3" />
+                  <Button fx:id="btVerContenidoFichero" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onVerContenidoAction" text="Ver Contenido Fichero" />
+                  <Button fx:id="btModificarFichero" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onModificarContenidoAction" text="Modificar Fichero" GridPane.rowIndex="1" />
+                  <TextArea fx:id="taContenidoFichero" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowSpan="3" />
                </children>
             </GridPane>
          </content>

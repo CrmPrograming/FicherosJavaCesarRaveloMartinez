@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
+import aed.proyectos.ficheros_java.App;
 import aed.proyectos.ficheros_java.model.Fichero;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -89,7 +91,8 @@ public class FicheroController implements Initializable {
 		);
 		
 		lvFicherosCarpetas.itemsProperty().bind(fichero.get().listadoProperty());
-
+		
+		taContenidoFichero.textProperty().bindBidirectional(fichero.get().contenidoProperty());
 	}
 
 	@FXML
@@ -109,21 +112,67 @@ public class FicheroController implements Initializable {
 	
 	@FXML
 	void onVerFicherosCarpetasAction(ActionEvent event) {
-		fichero.get().getListado().clear();
+		String[] error = new String[] {""};
 		
 		String ruta = fichero.get().getRuta();
 		
-		File root = new File(ruta);
+		if (ruta != null && !ruta.equals("")) {		
+			File root = new File(ruta);
+			
+			if (root.isDirectory()) {
+				fichero.get().getListado().clear();
+				for (String file : root.list()) {
+					fichero.get().getListado().add(file);
+				}
+				
+			} else
+				error = new String[] {"Error de fichero", "No se puede generar un listado de directorios con un fichero seleccionado."};
+		} else
+			error = new String[] {"Error de fichero", "No hay ninguna carpeta seleccionada."};
 		
-		if (root.isDirectory()) {
-			
-			for (String file : root.list()) {
-				fichero.get().getListado().add(file);
-			}
-			
-		} else {
-			// TODO: Diálogo de error si no es un directorio
+		if (error.length == 2) {
+			App.error(error[0], error[1]);
 		}
+	}
+	
+	@FXML
+	void onVerContenidoAction(ActionEvent event) {
+		String[] error = new String[] {""};
+		
+		String ruta = fichero.get().getRuta();
+		
+		if (ruta != null && !ruta.equals("")) {		
+			File root = new File(ruta);
+			
+			if (root.isFile())
+				if (root.canRead() && root.canWrite()) {
+					try {
+						Scanner scanner = new Scanner(root);
+						String contenido = "";
+						while (scanner.hasNextLine()) {
+							contenido += scanner.nextLine();
+							if (scanner.hasNextLine())
+								contenido += "\n";
+						}
+						scanner.close();
+						fichero.get().setContenido(contenido);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			else
+				error = new String[] {"Error de fichero", "No se puede generar un listado de directorios con un fichero seleccionado."};
+		} else
+			error = new String[] {"Error de fichero", "No hay ninguna carpeta seleccionada."};
+		
+		if (error.length == 2) {
+			App.error(error[0], error[1]);
+		}
+	}
+	
+	@FXML
+	void onModificarContenidoAction(ActionEvent event) {
+
 	}
 
 	public VBox getView() {
