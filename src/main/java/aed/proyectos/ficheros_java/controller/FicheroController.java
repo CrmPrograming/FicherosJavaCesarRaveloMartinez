@@ -1,6 +1,7 @@
 package aed.proyectos.ficheros_java.controller;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -82,16 +83,13 @@ public class FicheroController implements Initializable {
 
 		// Deshabilitar si:
 		// - Al menos un campo de texto está vacío
-		// - Ambos checkbox están sin marcar		
-		btCrear.disableProperty().bind(
-				Bindings.or(
-						Bindings.and(cbCarpeta.selectedProperty().not(), cbFichero.selectedProperty().not()),
-						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())
-				)
-		);
-		
+		// - Ambos checkbox están sin marcar
+		btCrear.disableProperty()
+				.bind(Bindings.or(Bindings.and(cbCarpeta.selectedProperty().not(), cbFichero.selectedProperty().not()),
+						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())));
+
 		lvFicherosCarpetas.itemsProperty().bind(fichero.get().listadoProperty());
-		
+
 		taContenidoFichero.textProperty().bindBidirectional(fichero.get().contenidoProperty());
 	}
 
@@ -109,42 +107,43 @@ public class FicheroController implements Initializable {
 	void onMoverAction(ActionEvent event) {
 
 	}
-	
+
 	@FXML
 	void onVerFicherosCarpetasAction(ActionEvent event) {
-		String[] error = new String[] {""};
-		
+		String[] error = new String[] { "" };
+
 		String ruta = fichero.get().getRuta();
-		
-		if (ruta != null && !ruta.equals("")) {		
+
+		if (ruta != null && !ruta.equals("")) {
 			File root = new File(ruta);
-			
+
 			if (root.isDirectory()) {
 				fichero.get().getListado().clear();
 				for (String file : root.list()) {
 					fichero.get().getListado().add(file);
 				}
-				
+
 			} else
-				error = new String[] {"Error de fichero", "No se puede generar un listado de directorios con un fichero seleccionado."};
+				error = new String[] { "Error de fichero",
+						"No se puede generar un listado de directorios con un fichero seleccionado." };
 		} else
-			error = new String[] {"Error de fichero", "No hay ninguna carpeta seleccionada."};
-		
+			error = new String[] { "Error de fichero", "No hay ninguna carpeta seleccionada." };
+
 		if (error.length == 2) {
 			App.error(error[0], error[1]);
 		}
 	}
-	
+
 	@FXML
 	void onVerContenidoAction(ActionEvent event) {
-		String[] error = new String[] {""};
-		
+		String[] error = new String[] { "" };
+
 		String ruta = fichero.get().getRuta();
-		
-		if (ruta != null && !ruta.equals("")) {		
+
+		if (ruta != null && !ruta.equals("")) {
 			File root = new File(ruta);
-			
-			if (root.isFile())
+
+			if (root.exists() && root.isFile()) {
 				if (root.canRead() && root.canWrite()) {
 					try {
 						Scanner scanner = new Scanner(root);
@@ -159,20 +158,55 @@ public class FicheroController implements Initializable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-			else
-				error = new String[] {"Error de fichero", "No se puede generar un listado de directorios con un fichero seleccionado."};
+				} else
+					error = new String[] { "Error de fichero", "Revise los permisos del fichero." };
+			} else {
+				if (root.exists())
+					error = new String[] { "Error de fichero", "No se puede mostrar el contenido de un directorio como texto. Para eso, utilizar la opción superior." };
+				else
+					error = new String[] { "Error de fichero", "El fichero no existe." };
+			}
 		} else
-			error = new String[] {"Error de fichero", "No hay ninguna carpeta seleccionada."};
-		
+			error = new String[] { "Error de fichero", "El fichero no existe." };
+
 		if (error.length == 2) {
 			App.error(error[0], error[1]);
 		}
 	}
-	
+
 	@FXML
 	void onModificarContenidoAction(ActionEvent event) {
+		String[] error = new String[] { "" };
 
+		String ruta = fichero.get().getRuta();
+
+		if (ruta != null && !ruta.equals("")) {
+			File root = new File(ruta);
+
+			if (root.exists() && root.isFile()) {
+				if (root.canRead() && root.canWrite()) {
+					try {
+						FileWriter fileWriter = new FileWriter(root);
+						fileWriter.write(fichero.get().getContenido());
+						fileWriter.close();
+						App.info("Operación realizada con éxito.", "Se han aplicado los cambios al fichero '" + root.getName() + "'");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else
+					error = new String[] { "Error de fichero", "Revise los permisos del fichero." };
+			} else {
+				if (root.exists())
+					error = new String[] { "Error de fichero", "No se puede mostrar el contenido de un directorio como texto. Para eso, utilizar la opción superior." };
+				else
+					error = new String[] { "Error de fichero", "El fichero no existe." };
+			}
+		} else
+			error = new String[] { "Error de fichero", "El fichero no existe." };
+
+		if (error.length == 2) {
+			App.error(error[0], error[1]);
+		}
 	}
 
 	public VBox getView() {

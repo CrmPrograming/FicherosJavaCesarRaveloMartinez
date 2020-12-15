@@ -25,6 +25,15 @@ public class App extends Application {
 
 	}
 	
+	public static void info(String header, String content) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.initOwner(primaryStage);
+		alert.setTitle("Información");
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
+	
 	public static void error(String header, String content) {
 		Alert alert = new Alert(AlertType.ERROR);
 		
