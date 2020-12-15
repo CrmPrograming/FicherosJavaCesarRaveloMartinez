@@ -1,5 +1,6 @@
 package aed.proyectos.ficheros_java.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +23,7 @@ import javafx.scene.layout.VBox;
 public class FicheroController implements Initializable {
 
 	// model
-	private ObjectProperty<Fichero> fichero = new SimpleObjectProperty<>();
+	private ObjectProperty<Fichero> fichero = new SimpleObjectProperty<>(new Fichero());
 	// view
 
 	@FXML
@@ -86,6 +87,8 @@ public class FicheroController implements Initializable {
 						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())
 				)
 		);
+		
+		lvFicherosCarpetas.itemsProperty().bind(fichero.get().listadoProperty());
 
 	}
 
@@ -102,6 +105,25 @@ public class FicheroController implements Initializable {
 	@FXML
 	void onMoverAction(ActionEvent event) {
 
+	}
+	
+	@FXML
+	void onVerFicherosCarpetasAction(ActionEvent event) {
+		fichero.get().getListado().clear();
+		
+		String ruta = fichero.get().getRuta();
+		
+		File root = new File(ruta);
+		
+		if (root.isDirectory()) {
+			
+			for (String file : root.list()) {
+				fichero.get().getListado().add(file);
+			}
+			
+		} else {
+			// TODO: Diálogo de error si no es un directorio
+		}
 	}
 
 	public VBox getView() {
