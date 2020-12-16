@@ -164,9 +164,10 @@ public class FicheroController implements Initializable {
 					fichero.get().getListado().add(file);
 				}
 
-			} else
-				error = new String[] { "Error de fichero",
-						"No se puede generar un listado de directorios con un fichero seleccionado." };
+			} else if (root.isFile())
+				error = new String[] { "Error de fichero", "No se puede generar un listado de directorios con un fichero seleccionado." };
+			else
+				error = new String[] { "Error de fichero", "La ruta especificada no es válida." };
 		} else
 			error = new String[] { "Error de fichero", "No hay ninguna carpeta seleccionada." };
 
