@@ -77,6 +77,15 @@ public class FicheroController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tfRutaActual.textProperty().bindBidirectional(fichero.get().rutaProperty());
+		
+		crearBindeosOperacionesBasicas();
+
+		lvFicherosCarpetas.itemsProperty().bind(fichero.get().listadoProperty());
+
+		taContenidoFichero.textProperty().bindBidirectional(fichero.get().contenidoProperty());
+	}
+
+	private void crearBindeosOperacionesBasicas() {
 		tfNombre.textProperty().bindBidirectional(fichero.get().nombreProperty());
 		cbCarpeta.selectedProperty().bindBidirectional(fichero.get().carpetaProperty());
 		cbFichero.selectedProperty().bindBidirectional(fichero.get().ficheroProperty());
@@ -87,15 +96,47 @@ public class FicheroController implements Initializable {
 		btCrear.disableProperty()
 				.bind(Bindings.or(Bindings.and(cbCarpeta.selectedProperty().not(), cbFichero.selectedProperty().not()),
 						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())));
-
-		lvFicherosCarpetas.itemsProperty().bind(fichero.get().listadoProperty());
-
-		taContenidoFichero.textProperty().bindBidirectional(fichero.get().contenidoProperty());
+		
+		btEliminar.disableProperty().bind(tfRutaActual.textProperty().isEmpty());
+		
+		btMover.disableProperty().bind(tfRutaActual.textProperty().isEmpty());
 	}
 
 	@FXML
 	void onCrearAction(ActionEvent event) {
-
+		String ruta = fichero.get().getRuta();
+		String nombre = fichero.get().getNombre();
+		File file = null;
+		String[] error = new String[] {""};
+		
+		try {
+			if (fichero.get().isCarpeta()) {
+				file = new File(ruta + "\\" + nombre);
+				
+				if (!file.exists() || (file.exists() && !file.isDirectory())) {
+					file.mkdir();
+				} else {
+					error = new String[] {"Se ha producido un error al intentar crear la carpeta.", "Ya existe una carpeta con el nombre '" + nombre + "'"};
+				}
+			} else if (fichero.get().isFichero()) {
+				file = new File(ruta + "\\" + nombre);
+				
+				if (!file.exists() || (file.exists() && !file.isFile())) {
+					file.createNewFile();
+				} else {
+					error = new String[] {"Se ha producido un error al intentar crear la carpeta.", "Ya existe un fichero con el nombre '" + nombre + "'"};
+				}
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		if (!error[0].equals(""))
+			App.error(error[0], error[1]);
+		else {
+			fichero.get().setRuta(file.getAbsolutePath());
+			App.info("Operación realizada con éxito", "Se ha podido crear sin problemas el " + ((fichero.get().isCarpeta())?"directorio":"fichero") + " de nombre '" + nombre + "'.");
+		}
 	}
 
 	@FXML
