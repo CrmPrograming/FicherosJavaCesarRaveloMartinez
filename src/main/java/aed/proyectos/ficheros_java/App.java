@@ -1,8 +1,11 @@
 package aed.proyectos.ficheros_java;
 
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
@@ -42,6 +45,18 @@ public class App extends Application {
 		alert.setHeaderText(header);
 		alert.setContentText(content);
 		alert.showAndWait();
+	}
+	
+	public static boolean confirm(String title, String header, String content) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(App.primaryStage);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		return (result.get() == ButtonType.OK);
 	}
 	
 	public static void main(String[] args) {

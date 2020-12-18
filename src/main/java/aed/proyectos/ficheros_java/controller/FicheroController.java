@@ -26,7 +26,9 @@ import javafx.scene.layout.VBox;
 public class FicheroController implements Initializable {
 
 	// model
+	
 	private ObjectProperty<Fichero> fichero = new SimpleObjectProperty<>(new Fichero());
+	
 	// view
 
 	@FXML
@@ -141,7 +143,16 @@ public class FicheroController implements Initializable {
 
 	@FXML
 	void onEliminarAction(ActionEvent event) {
-
+		File file = new File(fichero.get().getRuta());
+		String tipo = (file.isDirectory())?"directorio":"fichero";
+		if (App.confirm("Borrar " + tipo, "Borrar un "+ tipo + " es una operación irreversible.", "¿Desea continuar?")) {
+			borrarFile(file);
+			if (file.delete()) {
+				App.info("Operación realizada con éxito", "Se ha podido borrar sin problemas el " + ((fichero.get().isCarpeta())?"directorio":"fichero") + " de nombre '" + file.getName() + "'.");
+				fichero.get().setRuta("");
+			} else
+				App.error("Se ha producido un error al intentar hacer el borrado.", "No se ha podido borrar '" + fichero.getName() + "'.");
+		}
 	}
 
 	@FXML
@@ -248,6 +259,16 @@ public class FicheroController implements Initializable {
 
 		if (error.length == 2) {
 			App.error(error[0], error[1]);
+		}
+	}
+	
+	private static void borrarFile(File file) {
+		File[] ficheros = file.listFiles();
+		
+		for (File actual : ficheros) {
+			if (actual.isDirectory())
+				borrarFile(actual);
+			actual.delete();
 		}
 	}
 
