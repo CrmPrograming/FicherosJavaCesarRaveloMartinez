@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 public class Fichero {
 
 	private StringProperty ruta = new SimpleStringProperty();
-	private BooleanProperty carpeta = new SimpleBooleanProperty();
+	private BooleanProperty carpeta = new SimpleBooleanProperty(true);
 	private BooleanProperty fichero = new SimpleBooleanProperty();
 	private StringProperty nombre = new SimpleStringProperty();
 	private ListProperty<String> listado = new SimpleListProperty<>(FXCollections.observableArrayList());

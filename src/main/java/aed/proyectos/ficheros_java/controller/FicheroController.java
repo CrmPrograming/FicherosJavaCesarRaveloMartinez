@@ -17,10 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
 public class FicheroController implements Initializable {
@@ -44,13 +45,16 @@ public class FicheroController implements Initializable {
 	private Button btEliminar;
 
 	@FXML
-	private Button btMover;
+	private Button btMover;	 
 
 	@FXML
-	private CheckBox cbCarpeta;
+	private ToggleGroup tipoFile;
 
 	@FXML
-	private CheckBox cbFichero;
+	private RadioButton rbFichero;
+	
+	@FXML
+	private RadioButton rbCarpeta;
 
 	@FXML
 	private TextField tfNombre;
@@ -89,15 +93,15 @@ public class FicheroController implements Initializable {
 
 	private void crearBindeosOperacionesBasicas() {
 		tfNombre.textProperty().bindBidirectional(fichero.get().nombreProperty());
-		cbCarpeta.selectedProperty().bindBidirectional(fichero.get().carpetaProperty());
-		cbFichero.selectedProperty().bindBidirectional(fichero.get().ficheroProperty());
+		rbCarpeta.selectedProperty().bindBidirectional(fichero.get().carpetaProperty());
+		rbFichero.selectedProperty().bindBidirectional(fichero.get().ficheroProperty());
 
 		// Deshabilitar si:
 		// - Al menos un campo de texto está vacío
 		// - Ambos checkbox están sin marcar
-		btCrear.disableProperty()
-				.bind(Bindings.or(Bindings.and(cbCarpeta.selectedProperty().not(), cbFichero.selectedProperty().not()),
-						Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())));
+		btCrear.disableProperty().bind(
+				Bindings.or(tfRutaActual.textProperty().isEmpty(), tfNombre.textProperty().isEmpty())
+		);
 		
 		btEliminar.disableProperty().bind(tfRutaActual.textProperty().isEmpty());
 		
@@ -109,28 +113,36 @@ public class FicheroController implements Initializable {
 		String ruta = fichero.get().getRuta();
 		String nombre = fichero.get().getNombre();
 		File file = null;
+		File padre = new File(ruta);
 		String[] error = new String[] {""};
 		
-		try {
-			if (fichero.get().isCarpeta()) {
-				file = new File(ruta + "\\" + nombre);
-				
-				if (!file.exists() || (file.exists() && !file.isDirectory())) {
-					file.mkdir();
-				} else {
-					error = new String[] {"Se ha producido un error al intentar crear la carpeta.", "Ya existe una carpeta con el nombre '" + nombre + "'"};
+		if (padre.exists() && padre.isDirectory()) {
+			try {
+				if (fichero.get().isCarpeta()) {
+					file = new File(ruta + "\\" + nombre);
+					
+					if (!file.exists() || (file.exists() && !file.isDirectory())) {
+						file.mkdir();
+					} else {
+						error = new String[] {"Se ha producido un error al intentar crear la carpeta.", "Ya existe una carpeta con el nombre '" + nombre + "'"};
+					}
+				} else if (fichero.get().isFichero()) {
+					file = new File(ruta + "\\" + nombre);
+					
+					if (!file.exists() || (file.exists() && !file.isFile())) {
+						file.createNewFile();
+					} else {
+						error = new String[] {"Se ha producido un error al intentar crear el fichero.", "Ya existe un fichero con el nombre '" + nombre + "'"};
+					}
 				}
-			} else if (fichero.get().isFichero()) {
-				file = new File(ruta + "\\" + nombre);
-				
-				if (!file.exists() || (file.exists() && !file.isFile())) {
-					file.createNewFile();
-				} else {
-					error = new String[] {"Se ha producido un error al intentar crear la carpeta.", "Ya existe un fichero con el nombre '" + nombre + "'"};
-				}
+			} catch(IOException e) {
+				error = new String[] {"Se ha producido un error al intentar realizar la operación.", "Asegúrese de tener los permisos correspondientes."};
 			}
-		} catch(IOException e) {
-			e.printStackTrace();
+		} else {
+			if (!padre.exists())
+				error = new String[] {"Se ha producido un error al intentar realizar la operación.", "No existe la ruta especificada."};
+			else
+				error = new String[] {"Se ha producido un error al intentar realizar la operación.", "No se puede crear teniendo como ruta destino un fichero.\nDebe crearse dentro de una carpeta."};
 		}
 		
 		if (!error[0].equals(""))
