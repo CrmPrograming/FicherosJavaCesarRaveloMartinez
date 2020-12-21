@@ -20,7 +20,7 @@
       <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
          <children>
             <Label text="Ruta Actual" />
-            <TextField fx:id="tfRutaActual" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="tfRutaActual" maxWidth="1.7976931348623157E308" promptText="Ruta absoluta del fichero // directorio con nombre incluido" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" text="Operaciones básicas">
@@ -45,7 +45,7 @@
                      </children>
                   </HBox>
                   <Label text="Nombre del fichero o directorio" />
-                  <TextField fx:id="tfNombre" />
+                  <TextField fx:id="tfNombre" promptText="Nombre del nuevo fichero // directorio a crear" />
                </children>
             </VBox>
          </content>

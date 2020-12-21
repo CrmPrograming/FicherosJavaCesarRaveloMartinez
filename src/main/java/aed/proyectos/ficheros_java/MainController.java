@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import aed.proyectos.ficheros_java.controller.FicheroController;
+import aed.proyectos.ficheros_java.controller.XMLController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,12 +13,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 
 public class MainController implements Initializable {
-	
-	// model
-	
+
 	// controller
 	
 	private FicheroController ficheroController = new FicheroController();
+	private XMLController xmlController = new XMLController();
 	
 	// view
 	
@@ -42,6 +42,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tbFicheros.setContent(ficheroController.getView());
+		tbXML.setContent(xmlController.getView());
 	}
 
 	public BorderPane getView() {
