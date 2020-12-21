@@ -1,14 +1,20 @@
 package aed.proyectos.ficheros_java.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
+import org.jdom2.JDOMException;
+
+import aed.proyectos.ficheros_java.App;
 import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
+import aed.proyectos.ficheros_java.utils.GestorXML;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -21,6 +27,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -98,6 +106,19 @@ public class XMLController implements Initializable {
 				new LocalDateStringConverter(FormatStyle.SHORT)));
 		
 		xml.addListener((o, ov, nv) -> onXMLChanged(o, ov, nv));
+		
+		try {
+			xml.set(GestorXML.leerFichero());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
     
     private void onXMLChanged(ObservableValue<? extends XML> o, XML ov, XML nv) {
@@ -125,7 +146,14 @@ public class XMLController implements Initializable {
 
 	@FXML
     void onAbrirFicheroAction(ActionEvent event) {
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Abrir");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML (*.xml)", "*.xml"));
+		
+		File file = fileChooser.showOpenDialog(App.getPrimaryStage());
+		if (file != null) {
+			// TODO: Terminar de implementar
+		}
     }
 
     @FXML
