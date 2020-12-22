@@ -40,7 +40,8 @@ public class App extends Application {
 	public static void error(String header, String content) {
 		Alert alert = new Alert(AlertType.ERROR);
 		
-		alert.initOwner(App.primaryStage);
+		if (App.primaryStage != null)
+			alert.initOwner(App.primaryStage);
 		alert.setTitle("Error");
 		alert.setHeaderText(header);
 		alert.setContentText(content);

@@ -1,7 +1,8 @@
 package aed.proyectos.ficheros_java.utils;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,19 +12,20 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
-import aed.proyectos.ficheros_java.Main;
 import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
 
 public abstract class GestorXML {
 
-	public static XML leerFichero() throws FileNotFoundException, JDOMException, IOException {
+	public static XML leerFichero(File file) throws FileNotFoundException, JDOMException, IOException {
 		XML xml = new XML();
 		SAXBuilder builder = new SAXBuilder();
 		
-		Document documentJDOM = builder.build(new FileInputStream(Main.class.getResource("/Equipos.xml").getFile()));
+		Document documentJDOM = builder.build(file);
 		
 		Element root = documentJDOM.getRootElement();
 		
@@ -57,5 +59,29 @@ public abstract class GestorXML {
 		
 		xml.getEquipos().addAll(equipos);
 		return (xml);
+	}
+	
+	public static boolean modificarCopas(File file, String nomEquipo, Integer nuevoValor) throws JDOMException, IOException {
+		boolean result = true;
+		int i = 0;
+		
+		SAXBuilder builder = new SAXBuilder();		
+		Document documentJDOM = builder.build(file);		
+		Element root = documentJDOM.getRootElement();		
+		List<Element> equipos = root.getChildren();
+		
+		while (i < equipos.size() && !equipos.get(i).getAttributeValue("nomEquipo").equals(nomEquipo))
+			i++;
+		
+		// 34
+		if (i < equipos.size()) {
+			equipos.get(i).getAttribute("copasGanadas").setValue(nuevoValor.toString());			
+			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+			out.output(documentJDOM, fileOutputStream);
+		} else
+			result = false;			
+		
+		return result;
 	}
 }

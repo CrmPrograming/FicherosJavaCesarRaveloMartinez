@@ -14,8 +14,9 @@
       <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
          <children>
             <Button fx:id="btAbrir" mnemonicParsing="false" onAction="#onAbrirFicheroAction" text="Abrir fichero..." />
+            <Button fx:id="btActualizarCopas" mnemonicParsing="false" onAction="#onActualizarCopasAction" text="Modificar copas ganadas..." />
             <Button fx:id="btEliminar" mnemonicParsing="false" onAction="#onEliminarEquipoAction" text="Eliminar equipo" />
-            <Button fx:id="btNuevo" mnemonicParsing="false" onAction="#onNuevoContratoAction" text="Añadir contrato" />
+            <Button fx:id="btNuevo" mnemonicParsing="false" onAction="#onNuevoContratoAction" text="Añadir contrato..." />
             <Button fx:id="btGuardar" mnemonicParsing="false" onAction="#onGuardarAction" text="Guardar..." />
          </children>
       </HBox>

@@ -1,20 +1,22 @@
 package aed.proyectos.ficheros_java.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.FormatStyle;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.jdom2.JDOMException;
 
 import aed.proyectos.ficheros_java.App;
+import aed.proyectos.ficheros_java.Main;
 import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
 import aed.proyectos.ficheros_java.utils.GestorXML;
+import aed.proyectos.ficheros_java.utils.IntegerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +47,9 @@ public class XMLController implements Initializable {
 
     @FXML
     private Button btAbrir;
+    
+    @FXML
+    private Button btActualizarCopas;
 
     @FXML
     private Button btEliminar;
@@ -105,19 +110,14 @@ public class XMLController implements Initializable {
 		tcFechaFin.setCellFactory(TextFieldTableCell.forTableColumn(
 				new LocalDateStringConverter(FormatStyle.SHORT)));
 		
-		xml.addListener((o, ov, nv) -> onXMLChanged(o, ov, nv));
+		xml.addListener((o, ov, nv) -> onXMLChanged(o, ov, nv));		
 		
 		try {
-			xml.set(GestorXML.leerFichero());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			File file = new File("Equipos.xml");
+			xml.set(GestorXML.leerFichero(file));
+			xml.get().setFichero(file);
+		} catch (JDOMException | IOException e) {
+			App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
 		}
 	}
     
@@ -125,12 +125,16 @@ public class XMLController implements Initializable {
     	if (ov != null) {
     		tbEquipo.setItems(null);
     		ov.equipoSeleccionadoProperty().unbind();
+    		btActualizarCopas.disableProperty().unbind();
+    		btEliminar.disableProperty().unbind();
     	}
     	
     	if (nv != null) {
     		tbEquipo.setItems(nv.getEquipos());
     		nv.equipoSeleccionadoProperty().bind(tbEquipo.getSelectionModel().selectedItemProperty());
     		nv.equipoSeleccionadoProperty().addListener((observable, oldvalue, newvalue) -> onEquipoSelectedChanged(observable, oldvalue, newvalue));
+    		btActualizarCopas.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
+    		btEliminar.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
     	}
 	}
 
@@ -151,14 +155,41 @@ public class XMLController implements Initializable {
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML (*.xml)", "*.xml"));
 		
 		File file = fileChooser.showOpenDialog(App.getPrimaryStage());
-		if (file != null) {
-			// TODO: Terminar de implementar
+		if (file != null && file.isFile()) {
+			try {
+				xml.set(GestorXML.leerFichero(file));
+				xml.get().setFichero(file);
+			} catch (JDOMException | IOException e) {
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+			}
+		}
+    }
+	
+	@FXML
+    void onActualizarCopasAction(ActionEvent event) {
+		IntegerDialog dialog = new IntegerDialog(
+				"Modificar copas",
+				"Actualizar",
+				"Indique a continuación cuál es el nuevo valor del total de copas del equipo dado.",
+				"Nuevo valor:",
+				xml.get().getEquipoSeleccionado().getTotalCopas()
+		);
+		Optional<Integer> result = dialog.showAndWait();
+		
+		if (result.isPresent()) {
+			try {
+				boolean estado = GestorXML.modificarCopas(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), result.get());
+				// TODO: Actualizar campo en la tabla
+			} catch (JDOMException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
     }
 
     @FXML
     void onEliminarEquipoAction(ActionEvent event) {
-
+    	
     }
 
     @FXML
