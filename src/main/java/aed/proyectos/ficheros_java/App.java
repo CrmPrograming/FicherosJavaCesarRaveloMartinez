@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -23,7 +24,8 @@ public class App extends Application {
 		Scene escena = new Scene(controller.getView());
 		
 		primaryStage.setScene(escena);
-		primaryStage.setTitle("Ficheros en Java - Proyecto AED - César Ravelo Martínez");		
+		primaryStage.setTitle("Ficheros en Java - Proyecto AED - César Ravelo Martínez");
+		primaryStage.getIcons().add(new Image("/images/cv64x64.png"));
 		primaryStage.show();
 
 	}

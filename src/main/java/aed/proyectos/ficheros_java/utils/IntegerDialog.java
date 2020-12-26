@@ -3,6 +3,7 @@ package aed.proyectos.ficheros_java.utils;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.image.Image;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -26,6 +27,7 @@ public class IntegerDialog extends Dialog<Integer> {
 		Stage stage = (Stage) getDialogPane().getScene().getWindow();
 		stage.setMinWidth(350);
 		stage.setMinHeight(150);
+		stage.getIcons().add(new Image(this.getClass().getResource("/images/cv64x64.png").toString()));
 
 		ButtonType btCrear = new ButtonType(btAceptar, ButtonData.OK_DONE);
 		getDialogPane().getButtonTypes().addAll(btCrear, ButtonType.CANCEL);
