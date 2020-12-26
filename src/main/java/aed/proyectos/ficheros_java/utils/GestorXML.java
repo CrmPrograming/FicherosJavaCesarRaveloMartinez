@@ -24,9 +24,7 @@ public abstract class GestorXML {
 	public static XML leerFichero(File file) throws FileNotFoundException, JDOMException, IOException {
 		XML xml = new XML();
 		SAXBuilder builder = new SAXBuilder();
-		
 		Document documentJDOM = builder.build(file);
-		
 		Element root = documentJDOM.getRootElement();
 		
 		List<Element> hijos = root.getChildren();
@@ -58,7 +56,7 @@ public abstract class GestorXML {
 		}
 		
 		xml.getEquipos().addAll(equipos);
-		return (xml);
+		return xml;
 	}
 	
 	public static boolean modificarCopas(File file, String nomEquipo, Integer nuevoValor) throws JDOMException, IOException {
@@ -75,9 +73,7 @@ public abstract class GestorXML {
 
 		if (i < equipos.size()) {
 			equipos.get(i).getAttribute("copasGanadas").setValue(nuevoValor.toString());			
-			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-			FileOutputStream fileOutputStream = new FileOutputStream(file);
-			out.output(documentJDOM, fileOutputStream);
+			volcarDatos(documentJDOM, file);
 		} else
 			result = false;			
 		
@@ -99,12 +95,24 @@ public abstract class GestorXML {
 		if (i < equipos.size()) {
 			Element equipo = equipos.get(i);
 			root.removeContent(equipo);
-			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-			FileOutputStream fileOutputStream = new FileOutputStream(file);
-			out.output(documentJDOM, fileOutputStream);
+			volcarDatos(documentJDOM, file);
 		} else
 			result = false;
 		
 		return result;
 	}
+
+	public static void guardarFichero(File origen, File destino) throws JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document documentJDOM = builder.build(origen);
+		volcarDatos(documentJDOM, destino);
+	}
+	
+	private static void volcarDatos(Document documentJDOM, File destino) throws IOException {
+		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+		FileOutputStream fileOutputStream = new FileOutputStream(destino);
+		out.output(documentJDOM, fileOutputStream);
+		fileOutputStream.close();
+	}
+
 }

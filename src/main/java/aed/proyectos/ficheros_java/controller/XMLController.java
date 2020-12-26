@@ -212,7 +212,19 @@ public class XMLController implements Initializable {
 
     @FXML
     void onGuardarAction(ActionEvent event) {
-
+    	FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Guardar como");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML (*.xml)", "*.xml"));
+		
+		File file = fileChooser.showSaveDialog(App.getPrimaryStage());
+		if (file != null) {
+			try {
+				GestorXML.guardarFichero(xml.get().getFichero(), file);
+				App.info("Operación realizada con éxito.", "Se ha guardado correctamente en el fichero '" + file.getName() + "'.");
+			} catch (JDOMException | IOException e) {
+				App.error("Error de guardado", "Se ha producido un error intentando guardar el fichero.\nAsegúrese que esté en un formato válido.");
+			}
+		}
     }
 
     @FXML
