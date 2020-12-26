@@ -1,4 +1,4 @@
-package aed.proyectos.ficheros_java.utils;
+package aed.proyectos.ficheros_java.utils.dialog;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;

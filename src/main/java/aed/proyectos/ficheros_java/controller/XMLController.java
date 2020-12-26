@@ -15,7 +15,9 @@ import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
 import aed.proyectos.ficheros_java.utils.GestorXML;
-import aed.proyectos.ficheros_java.utils.IntegerDialog;
+import aed.proyectos.ficheros_java.utils.dialog.ContratoDialog;
+import aed.proyectos.ficheros_java.utils.dialog.ContratoFutbolista;
+import aed.proyectos.ficheros_java.utils.dialog.IntegerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -126,6 +128,7 @@ public class XMLController implements Initializable {
     		ov.equipoSeleccionadoProperty().unbind();
     		btActualizarCopas.disableProperty().unbind();
     		btEliminar.disableProperty().unbind();
+    		btNuevo.disableProperty().unbind();
     	}
     	
     	if (nv != null) {
@@ -134,6 +137,7 @@ public class XMLController implements Initializable {
     		nv.equipoSeleccionadoProperty().addListener((observable, oldvalue, newvalue) -> onEquipoSelectedChanged(observable, oldvalue, newvalue));
     		btActualizarCopas.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
     		btEliminar.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
+    		btNuevo.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
     	}
 	}
 
@@ -229,7 +233,13 @@ public class XMLController implements Initializable {
 
     @FXML
     void onNuevoContratoAction(ActionEvent event) {
-
+    	ContratoDialog dialog = new ContratoDialog(xml.get().getEquipoSeleccionado().getNombreEquipo());
+    	Optional<ContratoFutbolista> result = dialog.showAndWait();
+    	
+    	if (result.isPresent()) {
+    		System.out.println("Hello");
+    	}
+    	
     }
 
 	public VBox getView() {
