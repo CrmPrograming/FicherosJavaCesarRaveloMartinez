@@ -65,15 +65,14 @@ public abstract class GestorXML {
 		boolean result = true;
 		int i = 0;
 		
-		SAXBuilder builder = new SAXBuilder();		
+		SAXBuilder builder = new SAXBuilder();
 		Document documentJDOM = builder.build(file);		
-		Element root = documentJDOM.getRootElement();		
+		Element root = documentJDOM.getRootElement();
 		List<Element> equipos = root.getChildren();
 		
 		while (i < equipos.size() && !equipos.get(i).getAttributeValue("nomEquipo").equals(nomEquipo))
 			i++;
-		
-		// 34
+
 		if (i < equipos.size()) {
 			equipos.get(i).getAttribute("copasGanadas").setValue(nuevoValor.toString());			
 			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
@@ -81,6 +80,30 @@ public abstract class GestorXML {
 			out.output(documentJDOM, fileOutputStream);
 		} else
 			result = false;			
+		
+		return result;
+	}
+
+	public static boolean borrarEquipo(File file, String nomEquipo) throws JDOMException, IOException {
+		boolean result = true;
+		int i = 0;
+		
+		SAXBuilder builder = new SAXBuilder();
+		Document documentJDOM = builder.build(file);
+		Element root = documentJDOM.getRootElement();
+		List<Element> equipos = root.getChildren();
+		
+		while (i < equipos.size() && !equipos.get(i).getAttributeValue("nomEquipo").equals(nomEquipo))
+			i++;
+		
+		if (i < equipos.size()) {
+			Element equipo = equipos.get(i);
+			root.removeContent(equipo);
+			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+			out.output(documentJDOM, fileOutputStream);
+		} else
+			result = false;
 		
 		return result;
 	}

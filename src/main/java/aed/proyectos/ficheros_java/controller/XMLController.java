@@ -195,7 +195,19 @@ public class XMLController implements Initializable {
 
     @FXML
     void onEliminarEquipoAction(ActionEvent event) {
-    	
+    	String content = "El equipo a borrar es el siguiente: '" + xml.get().getEquipoSeleccionado().getNombreEquipo() + "'. ¿Desea continuar?";
+    	if (App.confirm("Eliminar equipo", "Va a proceder a eliminar un equipo de manera irreversible.", content)) {
+    		try {
+				boolean estado = GestorXML.borrarEquipo(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo());
+				
+				if (estado) {
+					xml.get().getEquipos().remove(xml.get().getEquipoSeleccionado());
+					App.info("Operación realizada con éxito.", "Se ha borradoo correctamente el equipo.");
+				}
+			} catch (JDOMException | IOException e) {
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+			}
+    	}
     }
 
     @FXML
