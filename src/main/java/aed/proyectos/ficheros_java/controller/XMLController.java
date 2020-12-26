@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import org.jdom2.JDOMException;
 
 import aed.proyectos.ficheros_java.App;
-import aed.proyectos.ficheros_java.Main;
 import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
@@ -178,11 +177,18 @@ public class XMLController implements Initializable {
 		
 		if (result.isPresent()) {
 			try {
-				boolean estado = GestorXML.modificarCopas(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), result.get());
-				// TODO: Actualizar campo en la tabla
+				Integer oldValue = xml.get().getEquipoSeleccionado().getTotalCopas();
+				Integer newValue = result.get();
+				boolean estado = GestorXML.modificarCopas(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), newValue);
+				
+				// Comprobamos si la modificación se pudo hacer sin problemas
+				if (estado) {
+					xml.get().getEquipoSeleccionado().setTotalCopas(newValue);
+					App.info("Operación realizada con éxito.", "Se ha modificado correctamente el total de copas de '" + oldValue + "' a '" + newValue + "'.");
+				}
+
 			} catch (JDOMException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
 			}
 		}
     }
