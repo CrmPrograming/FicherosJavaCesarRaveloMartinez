@@ -1,9 +1,10 @@
 package aed.proyectos.ficheros_java.utils.dialog;
 
+import aed.proyectos.ficheros_java.model.xml.Contrato;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.Node;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
@@ -17,7 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ContratoDialog extends Dialog<ContratoFutbolista> {
+public class ContratoDialog extends Dialog<Contrato> {
 	
 	public ContratoDialog(String nomEquipo) {
 		setTitle("Nuevo contrato del equipo " + nomEquipo);
@@ -76,11 +77,11 @@ public class ContratoDialog extends Dialog<ContratoFutbolista> {
 
 		setResultConverter(dialogButton -> {
 			if (dialogButton == btCrear) {
-				return new ContratoFutbolista(
-						dpFechaInicio.getValue(),
-						dpFechaFin.getValue(),
-						tfNombreJugador.getText()
-				);
+				Contrato contrato = new Contrato();
+				contrato.setNombreFutbolista(tfNombreJugador.getText());
+				contrato.setFechaInicio(dpFechaInicio.getValue());
+				contrato.setFechaFin(dpFechaFin.getValue());
+				return contrato;
 			}
 			return null;
 		});

@@ -16,7 +16,6 @@ import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
 import aed.proyectos.ficheros_java.utils.GestorXML;
 import aed.proyectos.ficheros_java.utils.dialog.ContratoDialog;
-import aed.proyectos.ficheros_java.utils.dialog.ContratoFutbolista;
 import aed.proyectos.ficheros_java.utils.dialog.IntegerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -117,7 +116,7 @@ public class XMLController implements Initializable {
 			File file = new File("Equipos.xml");
 			xml.set(GestorXML.leerFichero(file));
 			xml.get().setFichero(file);
-		} catch (JDOMException | IOException e) {
+		} catch (JDOMException | IOException | NullPointerException e) {
 			App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
 		}
 	}
@@ -183,10 +182,9 @@ public class XMLController implements Initializable {
 			try {
 				Integer oldValue = xml.get().getEquipoSeleccionado().getTotalCopas();
 				Integer newValue = result.get();
-				boolean estado = GestorXML.modificarCopas(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), newValue);
 				
 				// Comprobamos si la modificación se pudo hacer sin problemas
-				if (estado) {
+				if (GestorXML.modificarCopas(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), newValue)) {
 					xml.get().getEquipoSeleccionado().setTotalCopas(newValue);
 					App.info("Operación realizada con éxito.", "Se ha modificado correctamente el total de copas de '" + oldValue + "' a '" + newValue + "'.");
 				}
@@ -202,9 +200,8 @@ public class XMLController implements Initializable {
     	String content = "El equipo a borrar es el siguiente: '" + xml.get().getEquipoSeleccionado().getNombreEquipo() + "'. ¿Desea continuar?";
     	if (App.confirm("Eliminar equipo", "Va a proceder a eliminar un equipo de manera irreversible.", content)) {
     		try {
-				boolean estado = GestorXML.borrarEquipo(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo());
 				
-				if (estado) {
+				if (GestorXML.borrarEquipo(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo())) {
 					xml.get().getEquipos().remove(xml.get().getEquipoSeleccionado());
 					App.info("Operación realizada con éxito.", "Se ha borradoo correctamente el equipo.");
 				}
@@ -234,10 +231,17 @@ public class XMLController implements Initializable {
     @FXML
     void onNuevoContratoAction(ActionEvent event) {
     	ContratoDialog dialog = new ContratoDialog(xml.get().getEquipoSeleccionado().getNombreEquipo());
-    	Optional<ContratoFutbolista> result = dialog.showAndWait();
+    	Optional<Contrato> result = dialog.showAndWait();
     	
     	if (result.isPresent()) {
-    		System.out.println("Hello");
+    		try {
+				if (GestorXML.insertarContrato(xml.get().getFichero(), xml.get().getEquipoSeleccionado().getNombreEquipo(), result.get())) {
+					xml.get().getEquipoSeleccionado().getContratos().add(result.get());
+					App.info("Operación realizada con éxito.", "Se ha añadido un nuevo contrato para el equipo '" + xml.get().getEquipoSeleccionado().getNombreEquipo() + "'.");
+				}
+			} catch (JDOMException | IOException e) {
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+			}
     	}
     	
     }

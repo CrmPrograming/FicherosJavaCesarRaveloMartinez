@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +114,37 @@ public abstract class GestorXML {
 		FileOutputStream fileOutputStream = new FileOutputStream(destino);
 		out.output(documentJDOM, fileOutputStream);
 		fileOutputStream.close();
+	}
+
+	public static boolean insertarContrato(File file, String nomEquipo, Contrato contrato) throws JDOMException, IOException {
+		boolean result = true;
+		int i = 0;
+		
+		SAXBuilder builder = new SAXBuilder();
+		Document documentJDOM = builder.build(file);
+		Element root = documentJDOM.getRootElement();
+		List<Element> equipos = root.getChildren();
+		
+		while (i < equipos.size() && !equipos.get(i).getAttributeValue("nomEquipo").equals(nomEquipo))
+			i++;
+		
+		if (i < equipos.size()) {
+			Element equipo = equipos.get(i);
+			Element etiquetaFutbolista = new Element("Futbolista");
+			etiquetaFutbolista.setText(contrato.getNombreFutbolista());
+			etiquetaFutbolista.setAttribute("fechaInicio", contrato.getFechaInicio().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+			etiquetaFutbolista.setAttribute("fechaFin", contrato.getFechaFin().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+			
+			if (equipo.getChild("Contratos") == null) {
+				equipo.addContent(new Element("Contratos"));
+			}
+			
+			equipo.getChild("Contratos").addContent(etiquetaFutbolista);
+			volcarDatos(documentJDOM, file);
+		} else
+			result = false;
+		
+		return result;
 	}
 
 }
