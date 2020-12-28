@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane fx:id="view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <top>
+      <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btAbrir" mnemonicParsing="false" onAction="#onAbrirAction" text="Abrir Fichero..." />
+            <Button fx:id="btVerDatos" mnemonicParsing="false" onAction="#onVerDatosAction" text="Ver datos equipo" />
+            <Button fx:id="btModCopas" mnemonicParsing="false" onAction="#onModCopasAction" text="Modificar Copas" />
+            <Button fx:id="btGuardar" mnemonicParsing="false" onAction="#onGuardarAction" text="Guardar Como..." />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TitledPane fx:id="tpFichero" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" text="&lt;Sin fichero abierto&gt;" BorderPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <content>
+            <TableView fx:id="tvEquipos" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="tcID" editable="false" prefWidth="75.0" text="Identificador" />
+                <TableColumn fx:id="tcNombre" editable="false" prefWidth="75.0" text="Nombre del equipo" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </content>
+      </TitledPane>
+   </center>
+</BorderPane>
