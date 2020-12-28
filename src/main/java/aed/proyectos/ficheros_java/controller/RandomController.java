@@ -1,9 +1,16 @@
 package aed.proyectos.ficheros_java.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import aed.proyectos.ficheros_java.model.RandomAccess;
+import aed.proyectos.ficheros_java.model.acceso_aleatorio.Equipo;
+import aed.proyectos.ficheros_java.utils.GestorAccesoAleatorio;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +19,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.util.converter.NumberStringConverter;
 
 public class RandomController implements Initializable {
+	
+	// model
+	
+	private ObjectProperty<RandomAccess> random = new SimpleObjectProperty<RandomAccess>(new RandomAccess());
 
+	// view
+	
 	@FXML
 	private BorderPane view;
 
@@ -35,13 +50,13 @@ public class RandomController implements Initializable {
 	private TitledPane tpFichero;
 
 	@FXML
-	private TableView<?> tvEquipos;
+	private TableView<Equipo> tvEquipos;
 
 	@FXML
-	private TableColumn<?, Number> tcID;
+	private TableColumn<Equipo, Number> tcID;
 
 	@FXML
-	private TableColumn<?, String> tcNombre;
+	private TableColumn<Equipo, String> tcNombre;
 
 	public RandomController() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RandomAccessView.fxml"));
@@ -51,8 +66,34 @@ public class RandomController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		tcID.setCellValueFactory(v -> v.getValue().codEquipoProperty());
+		tcNombre.setCellValueFactory(v -> v.getValue().nombreEquipoProperty());
 
+		tcID.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+		tcNombre.setCellFactory(TextFieldTableCell.forTableColumn());
+		
+		random.addListener((o, ov, nv) -> onRandomChanged(o, ov, nv));
+		
+		try {
+			File file = new File("Equipos.dat");
+			random.set(GestorAccesoAleatorio.inicializar(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+			// TODO: Volcar Error
+		}
+	}
+
+	private void onRandomChanged(ObservableValue<? extends RandomAccess> o, RandomAccess ov, RandomAccess nv) {
+		if (ov != null) {
+			tvEquipos.setItems(null);
+			ov.equipoSeleccionadoProperty().unbind();
+		}
+		
+		if (nv != null) {
+			tvEquipos.setItems(nv.getEquipos());
+			nv.equipoSeleccionadoProperty().bind(tvEquipos.getSelectionModel().selectedItemProperty());
+			tpFichero.setText(nv.getFichero().getName());
+		}
 	}
 
 	@FXML

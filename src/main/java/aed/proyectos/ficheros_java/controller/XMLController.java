@@ -38,7 +38,7 @@ public class XMLController implements Initializable {
 	
 	// model
 	
-	private ObjectProperty<XML> xml = new SimpleObjectProperty<>(new XML());
+	private ObjectProperty<XML> xml = new SimpleObjectProperty<XML>(new XML());
 	
 	// view
 	
