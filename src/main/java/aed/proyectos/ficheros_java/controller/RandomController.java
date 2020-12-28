@@ -104,7 +104,19 @@ public class RandomController implements Initializable {
 
 	@FXML
 	void onAbrirAction(ActionEvent event) {
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Abrir");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Datos (*.dat)", "*.dat"));
+		
+		File file = fileChooser.showOpenDialog(App.getPrimaryStage());
+		if (file != null && file.isFile()) {
+			try {
+				random.set(GestorAccesoAleatorio.leerFichero(file));
+				App.info("Operación realizada con éxito.", "Se ha cargado el fichero '" + file.getName() + "' sin problemas.");
+			} catch (IOException e) {
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+			}
+		}
 	}
 
 	@FXML

@@ -79,6 +79,55 @@ public abstract class GestorAccesoAleatorio {
 
 		return result;
 	}
+	
+	public static RandomAccess leerFichero(File file) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile(file, "r");
+		RandomAccess result = new RandomAccess();
+		char charActual;
+		String stringActual = "";
+		Equipo equipoActual;
+		raf.seek(0);
+		
+		while (raf.getFilePointer() < raf.length()) {
+			equipoActual = new Equipo();
+			
+			// Identificador
+			equipoActual.setCodEquipo(raf.readInt());
+			raf.readChar();
+			
+			// Nombre equipo
+			while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+				stringActual += charActual;			
+			equipoActual.setNombreEquipo(convertirRegistroAString(stringActual));
+			stringActual = "";
+			
+			// Código de liga			
+			while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+				stringActual += charActual;			
+			equipoActual.setCodLiga(convertirRegistroAString(stringActual));
+			stringActual = "";
+			
+			// Localidad			
+			while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+				stringActual += charActual;			
+			equipoActual.setLocalidad(convertirRegistroAString(stringActual));
+			stringActual = "";
+			
+			// Copas ganadas
+			equipoActual.setCopasGanadas(raf.readInt());
+			raf.readChar();
+			
+			// Internacional
+			equipoActual.setInternacional(raf.readBoolean());
+			raf.readChar();
+			
+			result.getEquipos().add(equipoActual);
+		}
+		
+		raf.close();
+		result.setFichero(file);
+		return result;
+	}
 
 	public static void volcarDatos(List<Equipo> equipos, File file) throws IOException {
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");
@@ -106,5 +155,5 @@ public abstract class GestorAccesoAleatorio {
 
 		raf.close();
 	}
-
+	
 }
