@@ -22,6 +22,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.converter.NumberStringConverter;
 
 public class RandomController implements Initializable {
@@ -107,7 +109,21 @@ public class RandomController implements Initializable {
 
 	@FXML
 	void onGuardarAction(ActionEvent event) {
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Guardar como");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Datos (*.dat)", "*.dat"));
+		
+		File file = fileChooser.showSaveDialog(App.getPrimaryStage());
+		if (file != null) {
+			try {
+				GestorAccesoAleatorio.volcarDatos(random.get().getEquipos(), file);
+				random.get().setFichero(file);
+				tpFichero.setText(file.getName());
+				App.info("Operación realizada con éxito.", "Se ha guardado correctamente en el fichero '" + file.getName() + "'.");
+			} catch (IOException e) {
+				App.error("Error de guardado", "Se ha producido un error intentando guardar el fichero.\nAsegúrese de tener los permisos necesarios.");
+			}
+		}
 	}
 
 	@FXML
