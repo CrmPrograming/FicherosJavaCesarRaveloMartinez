@@ -11,7 +11,7 @@
 
 <VBox fx:id="view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
+      <HBox alignment="CENTER" prefHeight="50.0" spacing="5.0">
          <children>
             <Button fx:id="btAbrir" mnemonicParsing="false" onAction="#onAbrirFicheroAction" text="Abrir fichero..." />
             <Button fx:id="btActualizarCopas" mnemonicParsing="false" onAction="#onActualizarCopasAction" text="Modificar copas ganadas..." />

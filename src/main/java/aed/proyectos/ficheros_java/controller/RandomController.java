@@ -168,7 +168,16 @@ public class RandomController implements Initializable {
 
 	@FXML
 	void onVerDatosAction(ActionEvent event) {
-
+		try {
+			new InfoEquipoDialog(
+					GestorAccesoAleatorio.consultarEquipo(
+							random.get().getFichero(),
+							random.get().getEquipoSeleccionado().getCodEquipo()
+					)
+			);
+		} catch (IOException e) {
+			App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+		}
 	}
 
 	public BorderPane getView() {

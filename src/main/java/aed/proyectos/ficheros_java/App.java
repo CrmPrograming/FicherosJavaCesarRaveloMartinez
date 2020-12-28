@@ -5,8 +5,8 @@ import java.util.Optional;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -27,7 +27,6 @@ public class App extends Application {
 		primaryStage.setTitle("Ficheros en Java - Proyecto AED - César Ravelo Martínez");
 		primaryStage.getIcons().add(new Image("/images/cv64x64.png"));
 		primaryStage.show();
-
 	}
 	
 	public static void info(String header, String content) {

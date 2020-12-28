@@ -157,6 +157,48 @@ public abstract class GestorAccesoAleatorio {
 		raf.close();
 	}
 
+	public static Equipo consultarEquipo(File file, int codEquipo) throws IOException {
+		Equipo equipo = new Equipo();
+		RandomAccessFile raf = new RandomAccessFile(file, "r");
+		char charActual;
+		String stringActual = "";
+		raf.seek((codEquipo - 1) * BYTES_REGISTRO_COMPLETO);
+		
+		// Identificador
+		equipo.setCodEquipo(raf.readInt());
+		raf.readChar();
+					
+		// Nombre equipo
+		while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+			stringActual += charActual;			
+		equipo.setNombreEquipo(convertirRegistroAString(stringActual));
+		stringActual = "";
+					
+		// Código de liga			
+		while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+			stringActual += charActual;			
+		equipo.setCodLiga(convertirRegistroAString(stringActual));
+		stringActual = "";
+					
+		// Localidad			
+		while ((charActual = raf.readChar()) != TOKEN_SEPARADOR.charAt(0))
+			stringActual += charActual;			
+		equipo.setLocalidad(convertirRegistroAString(stringActual));
+		stringActual = "";
+					
+		// Copas ganadas
+		equipo.setCopasGanadas(raf.readInt());
+		raf.readChar();
+					
+		// Internacional
+		equipo.setInternacional(raf.readBoolean());
+		raf.readChar();
+		
+		raf.close();
+		
+		return equipo;
+	}
+	
 	public static void modificarCopas(File file, int codEquipo, Integer nuevoValor) throws IOException {
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");
 		raf.seek(((codEquipo - 1) * BYTES_REGISTRO_COMPLETO) + BYTES_POS_COPAS);
