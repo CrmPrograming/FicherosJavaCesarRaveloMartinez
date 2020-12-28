@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import aed.proyectos.ficheros_java.App;
 import aed.proyectos.ficheros_java.model.RandomAccess;
 import aed.proyectos.ficheros_java.model.acceso_aleatorio.Equipo;
 import aed.proyectos.ficheros_java.utils.GestorAccesoAleatorio;
@@ -78,8 +79,7 @@ public class RandomController implements Initializable {
 			File file = new File("Equipos.dat");
 			random.set(GestorAccesoAleatorio.inicializar(file));
 		} catch (IOException e) {
-			e.printStackTrace();
-			// TODO: Volcar Error
+			App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
 		}
 	}
 
@@ -87,12 +87,16 @@ public class RandomController implements Initializable {
 		if (ov != null) {
 			tvEquipos.setItems(null);
 			ov.equipoSeleccionadoProperty().unbind();
+			btVerDatos.disableProperty().unbind();
+			btModCopas.disableProperty().unbind();
 		}
 		
 		if (nv != null) {
 			tvEquipos.setItems(nv.getEquipos());
 			nv.equipoSeleccionadoProperty().bind(tvEquipos.getSelectionModel().selectedItemProperty());
 			tpFichero.setText(nv.getFichero().getName());
+			btVerDatos.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
+			btModCopas.disableProperty().bind(nv.equipoSeleccionadoProperty().isNull());
 		}
 	}
 
