@@ -3,12 +3,14 @@ package aed.proyectos.ficheros_java.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import aed.proyectos.ficheros_java.App;
 import aed.proyectos.ficheros_java.model.RandomAccess;
 import aed.proyectos.ficheros_java.model.acceso_aleatorio.Equipo;
 import aed.proyectos.ficheros_java.utils.GestorAccesoAleatorio;
+import aed.proyectos.ficheros_java.utils.dialog.IntegerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -140,7 +142,28 @@ public class RandomController implements Initializable {
 
 	@FXML
 	void onModCopasAction(ActionEvent event) {
-
+		IntegerDialog dialog = new IntegerDialog(
+				"Modificar copas",
+				"Actualizar",
+				"Indique a continuación cuál es el nuevo valor del total de copas del equipo dado.",
+				"Nuevo valor:",
+				random.get().getEquipoSeleccionado().getCopasGanadas()
+		);
+		Optional<Integer> result = dialog.showAndWait();
+		
+		if (result.isPresent()) {
+			try {
+				Integer oldValue = random.get().getEquipoSeleccionado().getCopasGanadas();
+				Integer newValue = result.get();
+				
+				GestorAccesoAleatorio.modificarCopas(random.get().getFichero(), random.get().getEquipoSeleccionado().getCodEquipo(), newValue);
+				random.get().getEquipoSeleccionado().setCopasGanadas(newValue);
+				App.info("Operación realizada con éxito.", "Se ha modificado correctamente el total de copas de '" + oldValue + "' a '" + newValue + "'.");				
+				
+			} catch (IOException e) {
+				App.error("Error de lectura", "Se ha producido un error intentando leer el fichero.\nAsegúrese que esté en un formato válido.");
+			}
+		}
 	}
 
 	@FXML

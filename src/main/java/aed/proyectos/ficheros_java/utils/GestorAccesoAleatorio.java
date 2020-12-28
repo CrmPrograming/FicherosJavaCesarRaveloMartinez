@@ -16,6 +16,7 @@ public abstract class GestorAccesoAleatorio {
 	private static final int BYTES_COD_LIGA = 5;
 	private static final int BYTES_LOCALIDAD = 60;
 	private final static int BYTES_REGISTRO_COMPLETO = 231;
+	private final static int BYTES_POS_COPAS = 222;
 
 	public static RandomAccess inicializar(File file) throws IOException {
 		Object[] datos;
@@ -153,6 +154,13 @@ public abstract class GestorAccesoAleatorio {
 			raf.writeChars(TOKEN_SEPARADOR);
 		}
 
+		raf.close();
+	}
+
+	public static void modificarCopas(File file, int codEquipo, Integer nuevoValor) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile(file, "rw");
+		raf.seek(((codEquipo - 1) * BYTES_REGISTRO_COMPLETO) + BYTES_POS_COPAS);
+		raf.writeInt(nuevoValor);
 		raf.close();
 	}
 	
