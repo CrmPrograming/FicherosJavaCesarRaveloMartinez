@@ -13,6 +13,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * Clase gestora del controlador principal de la aplicación. Delega su
+ * funcionalidad en el resto de controladores para cada pestaña:
+ * 
+ * <ul>
+ * 	<li>FicheroController</li>
+ * 	<li>RandomController</li>
+ * 	<li>XMLController</li>
+ * </ul>
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class MainController implements Initializable {
 
 	// controller
@@ -35,6 +48,11 @@ public class MainController implements Initializable {
     @FXML
     private Tab tbXML;
 	
+    /**
+     * Constructor de la clase, carga los componentes de la vista desde el fichero
+     * fxml correspondiente.
+     * @throws IOException
+     */
 	public MainController() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
 		loader.setController(this);

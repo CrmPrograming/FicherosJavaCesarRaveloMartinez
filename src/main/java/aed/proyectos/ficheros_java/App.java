@@ -10,6 +10,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+/**
+ * Clase gestora del Stage principal y demás operaciones
+ * de interfaz de usuario básicas (como por ejemplo,
+ * mostrar diálogos).
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class App extends Application {
 	
 	private MainController controller;
@@ -29,6 +37,12 @@ public class App extends Application {
 		primaryStage.show();
 	}
 	
+	/**
+	 * Método encargado de mostrar un diálogo de información.
+	 * 
+	 * @param header String con la cabecera del diálogo
+	 * @param content String con el contenido del diálogo
+	 */
 	public static void info(String header, String content) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.initOwner(primaryStage);
@@ -38,6 +52,12 @@ public class App extends Application {
 		alert.showAndWait();
 	}
 	
+	/**
+	 * Método encargado de mostrar un diálogo de error.
+	 * 
+	 * @param header String con la cabecera del diálogo
+	 * @param content String con el contenido del diálogo
+	 */
 	public static void error(String header, String content) {
 		Alert alert = new Alert(AlertType.ERROR);
 		
@@ -49,6 +69,13 @@ public class App extends Application {
 		alert.showAndWait();
 	}
 	
+	/**
+	 * Método encargado de mostrar un diálogo de confirmación.
+	 * 
+	 * @param title String con el título del diálogo
+	 * @param header String con la cabecera del diálogo
+	 * @param content String con el contenido del diálogo
+	 */
 	public static boolean confirm(String title, String header, String content) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.initOwner(App.primaryStage);
@@ -61,6 +88,10 @@ public class App extends Application {
 		return (result.get() == ButtonType.OK);
 	}
 	
+	/**
+	 * Método requerido por JavaFX para inicializar la aplicación.
+	 * @param args Listado de argumentos de entrada.
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

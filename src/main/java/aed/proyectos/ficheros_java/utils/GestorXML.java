@@ -20,8 +20,24 @@ import aed.proyectos.ficheros_java.model.XML;
 import aed.proyectos.ficheros_java.model.xml.Contrato;
 import aed.proyectos.ficheros_java.model.xml.Equipo;
 
+/**
+ * Clase gestora de las operaciones relacionadas con los ficheros XML.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public abstract class GestorXML {
 
+	/**
+	 * Método encargado de leer un fichero XML y extaer de él
+	 * los datos correspondientes.
+	 * 
+	 * @param file Instancia de File con el fichero a leer
+	 * @return Instancia de XML con los datos extraídos
+	 * @throws FileNotFoundException
+	 * @throws JDOMException
+	 * @throws IOException 
+	 */
 	public static XML leerFichero(File file) throws FileNotFoundException, JDOMException, IOException {
 		XML xml = new XML();
 		SAXBuilder builder = new SAXBuilder();
@@ -60,6 +76,17 @@ public abstract class GestorXML {
 		return xml;
 	}
 	
+	/**
+	 * Método encargado de modificar las copas
+	 * de un equipo en el fichero actual. 
+	 * 
+	 * @param file Fichero actual a modificar
+	 * @param nomEquipo String con el nombre del equipo a cambiar sus copas
+	 * @param nuevoValor Int con el nuevo valor de copas
+	 * @return true sí se pudo realizar la operación
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
 	public static boolean modificarCopas(File file, String nomEquipo, Integer nuevoValor) throws JDOMException, IOException {
 		boolean result = true;
 		int i = 0;
@@ -81,6 +108,15 @@ public abstract class GestorXML {
 		return result;
 	}
 
+	/**
+	 * Método encargado de borrar un equipo del fichero actual.
+	 * 
+	 * @param file Fichero actual a modificar
+	 * @param nomEquipo String con el nombre del equipo a cambiar sus copas
+	 * @return true sí se pudo realizar la operación
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
 	public static boolean borrarEquipo(File file, String nomEquipo) throws JDOMException, IOException {
 		boolean result = true;
 		int i = 0;
@@ -103,12 +139,32 @@ public abstract class GestorXML {
 		return result;
 	}
 
+	/**
+	 * Método encargado de guardar el fichero actual (origen)
+ 	 * en la ruta especificada (destino).
+ 	 * 
+ 	 * Este método se limita a construir el objeto Document y
+ 	 * delega la operación de guardado al método volcarDatos.
+ 	 * 
+	 * @param origen Instancia de File con los datos a guardar
+	 * @param destino Instancia de File con el fichero destino
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
 	public static void guardarFichero(File origen, File destino) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document documentJDOM = builder.build(origen);
 		volcarDatos(documentJDOM, destino);
 	}
 	
+	/**
+	 * Método encargado de guardar el fichero actual (origen)
+ 	 * en la ruta especificada (destino).
+	 * 
+	 * @param documentJDOM Instancia de Document para la escritura de datos
+	 * @param destino Instancia de File con el fichero destino
+	 * @throws IOException
+	 */
 	private static void volcarDatos(Document documentJDOM, File destino) throws IOException {
 		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 		FileOutputStream fileOutputStream = new FileOutputStream(destino);
@@ -116,6 +172,17 @@ public abstract class GestorXML {
 		fileOutputStream.close();
 	}
 
+	/**
+	 * Método encargado de insertar un nuevo contrato
+	 * para el equipo especificado.
+	 * 
+	 * @param file Fichero actual a modificar
+	 * @param nomEquipo String con el nombre del equipo
+	 * @param contrato Instancia de Contrato con los nuevos datos
+	 * @return true si se pudo realizar la operación
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
 	public static boolean insertarContrato(File file, String nomEquipo, Contrato contrato) throws JDOMException, IOException {
 		boolean result = true;
 		int i = 0;
