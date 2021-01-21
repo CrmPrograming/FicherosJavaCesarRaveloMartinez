@@ -9,6 +9,13 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Clase de apoyo para la información de un Equipo
+ * extraído de un fichero XML
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class Equipo {
 
 	private StringProperty nombreEquipo = new SimpleStringProperty();

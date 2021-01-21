@@ -1,5 +1,12 @@
 package aed.proyectos.ficheros_java.model.acceso_aleatorio;
 
+/**
+ * Clase de apoyo con valores por defecto
+ * para crear un fichero de Acceso Aleatorio
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public abstract class DatosIniciales {
 	
 	public static final Object[][] DATOS = {

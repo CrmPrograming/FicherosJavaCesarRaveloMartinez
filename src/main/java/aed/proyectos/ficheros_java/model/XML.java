@@ -10,6 +10,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Clase perteneciente al modelo de la aplicación.
+ * Representa a los datos extraídos de un fichero XML.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class XML {
 
 	private ListProperty<Equipo> equipos = new SimpleListProperty<Equipo>(FXCollections.observableArrayList());

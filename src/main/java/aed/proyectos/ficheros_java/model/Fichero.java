@@ -9,6 +9,13 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Clase perteneciente al modelo de la aplicación.
+ * Representa a los datos extraídos de un fichero básico.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class Fichero {
 
 	private StringProperty ruta = new SimpleStringProperty();

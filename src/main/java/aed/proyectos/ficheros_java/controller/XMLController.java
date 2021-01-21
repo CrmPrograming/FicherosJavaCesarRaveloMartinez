@@ -34,6 +34,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
+/**
+ * Clase controladora de la pestaña asociada
+ * a la manipulación de ficheros XML.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class XMLController implements Initializable {
 	
 	// model
@@ -84,6 +91,11 @@ public class XMLController implements Initializable {
     @FXML
     private TableColumn<Contrato, LocalDate> tcFechaFin;
     
+    /**
+     * Constructor de la clase.
+     * 
+     * @throws IOException
+     */
     public XMLController() throws IOException {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/XMLView.fxml"));
 		loader.setController(this);
@@ -121,6 +133,14 @@ public class XMLController implements Initializable {
 		}
 	}
     
+    /**
+     * Método encargado de actualizar los componentes
+     * cuando cambie el objeto modelo principal del controlador.
+     * 
+     * @param o
+     * @param ov
+     * @param nv
+     */
     private void onXMLChanged(ObservableValue<? extends XML> o, XML ov, XML nv) {
     	if (ov != null) {
     		tbEquipo.setItems(null);
@@ -140,6 +160,14 @@ public class XMLController implements Initializable {
     	}
 	}
 
+    /**
+     * Método encargado de actualizar los componentes
+     * cuando cambie el objeto que apunta al equipo actualmente seleccionado.
+     * 
+     * @param o
+     * @param ov
+     * @param nv
+     */
 	private void onEquipoSelectedChanged(ObservableValue<? extends Equipo> o, Equipo ov, Equipo nv) {
 		if (ov != null) {
 			tbContrato.setItems(null);

@@ -23,6 +23,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
+/**
+ * Clase controladora de la pestaña asociada
+ * a la manipulación de ficheros básicos.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class FicheroController implements Initializable {
 
 	// model
@@ -73,6 +80,11 @@ public class FicheroController implements Initializable {
 	@FXML
 	private TextArea taContenidoFichero;
 
+	/**
+     * Constructor de la clase.
+     * 
+     * @throws IOException
+     */
 	public FicheroController() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FicherosView.fxml"));
 		loader.setController(this);
@@ -90,6 +102,10 @@ public class FicheroController implements Initializable {
 		taContenidoFichero.textProperty().bindBidirectional(fichero.get().contenidoProperty());
 	}
 
+	/**
+	 * Método encargado de crear los bindeos propios
+	 * del controlador entre modelo y vista.
+	 */
 	private void crearBindeosOperacionesBasicas() {
 		tfNombre.textProperty().bindBidirectional(fichero.get().nombreProperty());
 		rbCarpeta.selectedProperty().bindBidirectional(fichero.get().carpetaProperty());

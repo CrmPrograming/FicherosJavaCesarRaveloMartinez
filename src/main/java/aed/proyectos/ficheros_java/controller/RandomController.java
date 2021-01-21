@@ -28,6 +28,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.converter.NumberStringConverter;
 
+/**
+ * Clase controladora de la pestaña asociada
+ * a la manipulación de ficheros de Acceso Aleatorio.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class RandomController implements Initializable {
 	
 	// model
@@ -63,6 +70,11 @@ public class RandomController implements Initializable {
 	@FXML
 	private TableColumn<Equipo, String> tcNombre;
 
+	/**
+     * Constructor de la clase.
+     * 
+     * @throws IOException
+     */
 	public RandomController() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RandomAccessView.fxml"));
 		loader.setController(this);
@@ -87,6 +99,14 @@ public class RandomController implements Initializable {
 		}
 	}
 
+	/**
+     * Método encargado de actualizar los componentes
+     * cuando cambie el objeto modelo principal del controlador.
+     * 
+     * @param o
+     * @param ov
+     * @param nv
+     */
 	private void onRandomChanged(ObservableValue<? extends RandomAccess> o, RandomAccess ov, RandomAccess nv) {
 		if (ov != null) {
 			tvEquipos.setItems(null);

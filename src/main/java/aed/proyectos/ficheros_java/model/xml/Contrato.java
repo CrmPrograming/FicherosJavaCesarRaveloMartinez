@@ -7,6 +7,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Clase de apoyo para la información de un Contrato
+ * extraído de un fichero XML
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class Contrato {
 	private StringProperty nombreFutbolista = new SimpleStringProperty();
 	private ObjectProperty<LocalDate> fechaInicio = new SimpleObjectProperty<LocalDate>();

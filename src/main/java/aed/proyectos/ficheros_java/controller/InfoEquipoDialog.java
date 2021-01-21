@@ -16,6 +16,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Clase gestora de la ventana que
+ * mostrará la información asociada a un
+ * equipo.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class InfoEquipoDialog extends Stage implements Initializable {
 
 	// model

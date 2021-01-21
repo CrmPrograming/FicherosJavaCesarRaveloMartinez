@@ -7,6 +7,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Clase de apoyo para la información de un Equipo
+ * extraído de un fichero de Acceso Aleatorio
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class Equipo {
 
 	private IntegerProperty codEquipo = new SimpleIntegerProperty();

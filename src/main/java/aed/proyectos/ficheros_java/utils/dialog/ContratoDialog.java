@@ -18,8 +18,20 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Clase de apoyo para mostrar un diálogo al usuario
+ * y pedirle datos de un contrato.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class ContratoDialog extends Dialog<Contrato> {
 	
+	/**
+	 * Constructor de la clase.
+	 * 
+	 * @param nomEquipo Nombre del equipo a mostrar en el título
+	 */
 	public ContratoDialog(String nomEquipo) {
 		setTitle("Nuevo contrato del equipo " + nomEquipo);
 

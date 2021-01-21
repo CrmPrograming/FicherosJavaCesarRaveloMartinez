@@ -15,12 +15,36 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+/**
+ * Clase de apoyo encargada de pedirle al usuario
+ * datos de tipo int.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public class IntegerDialog extends Dialog<Integer> {
 
+	/**
+	 * Constructor de la clase.
+	 * 
+	 * @param title Título del diálogo
+	 * @param btAceptar Texto para el botón de aceptar
+	 * @param lbContent Texto para el label principal del diálogo
+	 * @param lbDesc Texto para el label extendido del diálogo
+	 */
 	public IntegerDialog(String title, String btAceptar, String lbContent, String lbDesc) {
 		this(title, btAceptar, lbContent, lbDesc, 0);
 	}
 	
+	/**
+	 * Constructor extendido de la clase.
+	 * 
+	 * @param title Título del diálogo
+	 * @param btAceptar Texto para el botón de aceptar
+	 * @param lbContent Texto para el label principal del diálogo
+	 * @param lbDesc Texto para el label extendido del diálogo
+	 * @param Integer defValue Valor por defecto del int en el diálogo
+	 */
 	public IntegerDialog(String title, String btAceptar, String lbContent, String lbDesc, Integer defValue) {
 		setTitle(title);
 

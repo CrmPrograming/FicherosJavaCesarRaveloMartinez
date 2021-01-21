@@ -11,8 +11,24 @@ import aed.proyectos.ficheros_java.App;
 import aed.proyectos.ficheros_java.model.Fichero;
 import javafx.stage.DirectoryChooser;
 
+/**
+ * Clase gestora de las operaciones relacionadas con
+ * los ficheros y directorios.
+ * 
+ * @author César Ravelo Martínez
+ *
+ */
 public abstract class GestorFichero {
 	
+	/**
+	 * Método encargado de crear un documento (fichero o carpeta)
+	 * en la ruta especificada.
+	 * 
+	 * @param fichero Instancia de Fichero con la información del fichero a crear
+	 * @param error Array de String con "" en la posición 0 si no hubo error,
+	 * o un mensaje de error en las posiciones 0 y su descripción en la 1
+	 * @return Instancia de File con el documento ya creado
+	 */
 	public static File crearFichero(Fichero fichero, String[] error) {
 		String ruta = fichero.getRuta();
 		String nombre = fichero.getNombre();
@@ -57,6 +73,11 @@ public abstract class GestorFichero {
 		return file;
 	}
 	
+	/**
+	 * Método encargado de borrar todo el árbol de directorios
+	 * de manera recursiva.
+	 * @param file Instancia de File a borrar
+	 */
 	public static void borrarEstructuraDirectorios(File file) {
 		File[] ficheros = file.listFiles();
 
@@ -67,8 +88,15 @@ public abstract class GestorFichero {
 		}
 	}
 	
+	/**
+	 * Método encargado de mover un documento a la ruta que se especifique
+	 * posteriormente. Delega la operación completa al método moverEnProfundidad.
+	 * 
+	 * @param fichero Instancia de Fichero con el documento a mover
+	 * @param error Array de String con "" en la posición 0 si no hubo error,
+	 * o un mensaje de error en las posiciones 0 y su descripción en la 1
+	 */
 	public static void moverFichero(Fichero fichero, String[] error) {
-		
 		String ruta = fichero.getRuta();
 
 		if (ruta != null && !ruta.equals("")) {
@@ -105,6 +133,14 @@ public abstract class GestorFichero {
 		}
 	}
 	
+	/**
+	 * Método encargado de mover de manera recursiva un documento a
+	 * una ruta destino.
+	 * 
+	 * @param origen Instancia de File con el origen a mover
+	 * @param destino Instancia de File con el destino a mover
+	 * @throws IOException
+	 */
 	private static void moverEnProfundidad(File origen, File destino) throws IOException {
 		if (origen.isDirectory()) {
 			File ficheroDestino = new File(destino.getAbsolutePath() + "\\" + origen.getName());
@@ -121,6 +157,14 @@ public abstract class GestorFichero {
 		}
 	}
 
+	/**
+	 * Método encargado de comprobar si un directorio
+	 * es un directorio padre de otro.
+	 * 
+	 * @param origen Directorio supuestamente padre del otro
+	 * @param destino Directorio supuestamente hijo del otro
+	 * @return
+	 */
 	private static boolean esDirectorioPadre(File origen, File destino) {
 		String rutaOrigen = origen.getAbsolutePath();
 		String rutaDestino = destino.getAbsolutePath();
@@ -128,6 +172,15 @@ public abstract class GestorFichero {
 		return rutaDestino.contains(rutaOrigen);
 	}
 	
+	/**
+	 * Método encargado de obtener el listado de
+	 * ficheros y directorios ubicados en la ruta
+	 * especificada por el objeto Fichero indicado. 
+	 * 
+	 * @param fichero Instancia de Fichero con la ruta a analizar
+	 * @param error Array de String con "" en la posición 0 si no hubo error,
+	 * o un mensaje de error en las posiciones 0 y su descripción en la 1
+	 */
 	public static void listarDirectorio(Fichero fichero, String[] error) {
 		String ruta = fichero.getRuta();
 
@@ -153,6 +206,14 @@ public abstract class GestorFichero {
 		}
 	}
 	
+	/**
+	 * Método encargado de obtener el contenido
+	 * de un fichero dado.
+	 * 
+	 * @param fichero Instancia de Fichero con el fichero a analizar
+	 * @param error Array de String con "" en la posición 0 si no hubo error,
+	 * o un mensaje de error en las posiciones 0 y su descripción en la 1
+	 */
 	public static void mostrarContenido(Fichero fichero, String[] error) {
 		String ruta = fichero.getRuta();
 
@@ -193,6 +254,15 @@ public abstract class GestorFichero {
 		}
 	}
 	
+	/**
+	 * Método encargado de modificar el contenido
+	 * de un fichero dado.
+	 * 
+	 * @param fichero Instancia de Fichero con el nuevo contenido y la ruta del
+	 * fichero a modificar 
+	 * @param error Array de String con "" en la posición 0 si no hubo error,
+	 * o un mensaje de error en las posiciones 0 y su descripción en la 1
+	 */
 	public static void modificarContenido(Fichero fichero, String[] error) {
 		String ruta = fichero.getRuta();
 
